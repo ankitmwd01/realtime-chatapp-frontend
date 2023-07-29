@@ -25,6 +25,21 @@ const ScrollableChat = ({ messages }) => {
           key={m._id}
           className="messages"
         >
+          <span
+            style={{
+              backgroundColor: `${
+                m.sender._id === user._id ? "#BEE3F8" : "#B9F5D0"
+              }`,
+              borderRadius: "20px",
+              padding: "5px 15px",
+              maxWidth: "fit-content",
+              marginLeft: isSameSenderMargin(messages, m, i, user._id),
+
+              marginTop: isSameUser(messages, m, i, user._id) ? "3px" : "10px",
+            }}
+          >
+            {m.content}
+          </span>
           {(isSameSender(messages, m, i, user._id) ||
             isLastMessage(messages, i, user._id)) &&
             m.sender._id !== user._id && (
@@ -38,22 +53,6 @@ const ScrollableChat = ({ messages }) => {
                 ></Avatar>
               </Tooltip>
             )}
-          <span
-            style={{
-              backgroundColor: `${
-                m.sender._id === user._id ? "#BEE3F8" : "#B9F5D0"
-              }`,
-
-              borderRadius: "20px",
-              padding: "5px 15px",
-              maxWidth: "fit-content",
-              marginLeft: isSameSenderMargin(messages, m, i, user._id),
-
-              marginTop: isSameUser(messages, m, i, user._id) ? "3px" : "10px",
-            }}
-          >
-            {m.content}
-          </span>
         </div>
       ))}
     </ScrollableFeed>
