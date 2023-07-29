@@ -61,6 +61,7 @@ const SideDrawer = () => {
         position: "top-left",
       });
     }
+
     try {
       SetLoading(true);
 
@@ -87,33 +88,48 @@ const SideDrawer = () => {
     }
   };
   const accessChat = async (userId) => {
-    try {
-      SetLoadingChat(true);
-      const config = {
-        "content-type": "application/json",
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_ENDPOINT}/api/chat`,
-        { userId },
-        config
-      );
-      if (!chats.find((c) => c._id === data.id)) {
-        setChats([data, ...chats]);
+    var sign = 1;
+    await chats?.forEach((element) => {
+      if (
+        element?.users[1]._id === userId ||
+        element?.users[0]._id === userId
+      ) {
+        setSelectedChat(element);
+        sign = 0;
+        return;
       }
-      setSelectedChat(data);
-      SetLoadingChat(false);
-    } catch (error) {
-      toast({
-        title: "Error fetching the Chat",
-        description: error.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom-left",
-      });
+    });
+    if (sign) {
+      try {
+        SetLoadingChat(true);
+        const config = {
+          "content-type": "application/json",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+
+        const { data } = await axios.post(
+          `${process.env.REACT_APP_ENDPOINT}/api/chat`,
+          { userId },
+          config
+        );
+
+        if (!chats?.find((c) => c.users[1]._id === data?.users[1]._id)) {
+          setChats([data, ...chats]);
+        }
+        setSelectedChat(data);
+        SetLoadingChat(false);
+      } catch (error) {
+        toast({
+          title: "Error fetching the Chat",
+          description: error.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom-left",
+        });
+      }
     }
   };
   return (

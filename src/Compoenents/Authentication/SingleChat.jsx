@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   FormControl,
   IconButton,
@@ -14,7 +15,6 @@ import { getSender, getSenderFull } from "../../config/ChatLogic";
 import ProfileModel from "./Miscellaneous/ProfileModel";
 import UpdateGroupChatModel from "./Miscellaneous/UpdateGroupChatModel";
 import axios from "axios";
-import "./style.css";
 import Lottie from "lottie-react";
 import ScrollableChat from "./ScrollableChat";
 import io from "socket.io-client";
@@ -182,6 +182,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             ></IconButton>
             {!selectedChat.isGroupChat ? (
               <>
+                <Avatar src={getSenderFull(user, selectedChat.users).pic} />
                 {getSender(user, selectedChat.users)}
                 <ProfileModel
                   user={getSenderFull(user, selectedChat.users)}
@@ -206,7 +207,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             p={3}
             bg="#E8E8E8"
             w="100%"
-            h="100%"
+            h={"100%"}
             borderRadius={"lg"}
             overflowY={"hidden"}
           >
@@ -219,9 +220,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 margin={"auto"}
               ></Spinner>
             ) : (
-              <div className="messages">
-                <ScrollableChat messages={messages} />
-              </div>
+              <ScrollableChat messages={messages} />
             )}
             <FormControl onKeyDown={sendMessage} isRequired mt={3}>
               {isTyping ? (

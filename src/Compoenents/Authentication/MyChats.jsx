@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ChatState } from "../../context/ChatProvider";
-import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
+import { Avatar, Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { AiOutlinePlus } from "react-icons/ai";
 import ChatLoading from "./ChatLoading";
@@ -92,7 +92,19 @@ const MyChats = ({ fetchAgain }) => {
                 py={2}
                 borderRadius={"lg"}
                 key={chat._id}
+                display={"flex"}
+                alignItems={"center"}
+                style={{ border: "2px solid black" }}
               >
+                <Avatar
+                  mr={3}
+                  src={
+                    !chat.isGroupChat &&
+                    (chat?.users[1]._id !== user._id
+                      ? chat.users[1].pic
+                      : chat.users[0].pic)
+                  }
+                ></Avatar>
                 <Text>
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat?.users)

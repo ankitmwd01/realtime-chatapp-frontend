@@ -1,4 +1,5 @@
-import React from "react";
+// import React from "react";
+import * as React from "react";
 import ScrollableFeed from "react-scrollable-feed";
 import {
   isLastMessage,
@@ -7,36 +8,47 @@ import {
   isSameUser,
 } from "../../config/ChatLogic";
 import { ChatState } from "../../context/ChatProvider";
-import { Avatar, Tooltip } from "@chakra-ui/react";
+import { Avatar, Tooltip, border } from "@chakra-ui/react";
+import ScrollToBottom from "react-scroll-to-bottom";
+import "./style.css";
+
 const ScrollableChat = ({ messages }) => {
   const { user } = ChatState();
+  console.log(messages);
   return (
     <ScrollableFeed>
       {messages?.map((m, i) => (
-        <div style={{ display: "flex" }} key={m._id}>
+        <div
+          style={{
+            display: "flex",
+          }}
+          key={m._id}
+          className="messages"
+        >
           {(isSameSender(messages, m, i, user._id) ||
-            isLastMessage(messages, i, user._id)) && (
-            <Tooltip label={m.sender.name} placement="bottom-start" hasArrow>
-              <Avatar
-                mt="7px"
-                mr={1}
-                size={"sm"}
-                cursor={"pointer"}
-                name={m.sender.name}
-                src={m.sender.pic}
-              ></Avatar>
-            </Tooltip>
-          )}
+            isLastMessage(messages, i, user._id)) &&
+            m.sender._id !== user._id && (
+              <Tooltip label={m.sender.name} placement="bottom-start" hasArrow>
+                <Avatar
+                  mt="7px"
+                  size={"sm"}
+                  cursor={"pointer"}
+                  name={m.sender.name}
+                  src={m.sender.pic}
+                ></Avatar>
+              </Tooltip>
+            )}
           <span
             style={{
               backgroundColor: `${
                 m.sender._id === user._id ? "#BEE3F8" : "#B9F5D0"
               }`,
+
               borderRadius: "20px",
               padding: "5px 15px",
-              maxWidth: "75%",
-
+              maxWidth: "fit-content",
               marginLeft: isSameSenderMargin(messages, m, i, user._id),
+
               marginTop: isSameUser(messages, m, i, user._id) ? "3px" : "10px",
             }}
           >
